@@ -33,7 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Todo Route
     Route::resource('todo', TodoController::class)
-        ->only(['index', 'store', 'edit', 'update']);
+        ->only(['index', 'store', 'edit', 'update', 'destroy']);
 
 });
 
