@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TodoController extends Controller
 {
@@ -42,7 +43,7 @@ class TodoController extends Controller
         ]);
 
         $request->user()->todo()->create($validated);
-    
+
         return redirect(route('todo.index'));
     }
 
@@ -65,7 +66,11 @@ class TodoController extends Controller
      */
     public function edit(Todo $todo)
     {
-        //
+        $this->authorize('update', $todo);
+
+        return view('todo.edit', [
+            'todo' => $todo
+        ]);
     }
 
     /**
@@ -77,7 +82,15 @@ class TodoController extends Controller
      */
     public function update(Request $request, Todo $todo)
     {
-        //
+        $this->authorize('update', $todo);
+
+        $validated = $request->validate([
+            'todo' => 'required|string|max:255'
+        ]);
+
+        $todo->update($validated);
+
+        return redirect(route('todo.index'));
     }
 
     /**
